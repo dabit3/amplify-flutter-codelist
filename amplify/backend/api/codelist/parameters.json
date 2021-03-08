@@ -1,0 +1,5 @@
+{
+  "AppSyncApiName": "codelist",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false
+}
