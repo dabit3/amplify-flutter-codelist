@@ -25,6 +25,7 @@ class CodeListItem extends Model {
   final String id;
   final String title;
   final String description;
+  final String link;
 
   @override
   getInstanceType() => classType;
@@ -35,14 +36,21 @@ class CodeListItem extends Model {
   }
 
   const CodeListItem._internal(
-      {@required this.id, @required this.title, this.description});
+      {@required this.id,
+      @required this.title,
+      @required this.description,
+      this.link});
 
   factory CodeListItem(
-      {String id, @required String title, String description}) {
+      {String id,
+      @required String title,
+      @required String description,
+      String link}) {
     return CodeListItem._internal(
         id: id == null ? UUID.getUUID() : id,
         title: title,
-        description: description);
+        description: description,
+        link: link);
   }
 
   bool equals(Object other) {
@@ -55,7 +63,8 @@ class CodeListItem extends Model {
     return other is CodeListItem &&
         id == other.id &&
         title == other.title &&
-        description == other.description;
+        description == other.description &&
+        link == other.link;
   }
 
   @override
@@ -68,30 +77,35 @@ class CodeListItem extends Model {
     buffer.write("CodeListItem {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("title=" + "$title" + ", ");
-    buffer.write("description=" + "$description");
+    buffer.write("description=" + "$description" + ", ");
+    buffer.write("link=" + "$link");
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  CodeListItem copyWith({String id, String title, String description}) {
+  CodeListItem copyWith(
+      {String id, String title, String description, String link}) {
     return CodeListItem(
         id: id ?? this.id,
         title: title ?? this.title,
-        description: description ?? this.description);
+        description: description ?? this.description,
+        link: link ?? this.link);
   }
 
   CodeListItem.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title'],
-        description = json['description'];
+        description = json['description'],
+        link = json['link'];
 
   Map<String, dynamic> toJson() =>
-      {'id': id, 'title': title, 'description': description};
+      {'id': id, 'title': title, 'description': description, 'link': link};
 
   static final QueryField ID = QueryField(fieldName: "codeListItem.id");
   static final QueryField TITLE = QueryField(fieldName: "title");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
+  static final QueryField LINK = QueryField(fieldName: "link");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "CodeListItem";
@@ -106,6 +120,11 @@ class CodeListItem extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: CodeListItem.DESCRIPTION,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: CodeListItem.LINK,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });

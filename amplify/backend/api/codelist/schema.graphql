@@ -1,6 +1,6 @@
 type CodeListItem @model {
   id: ID!
   title: String!
-  # link: String! // TOOD
-  description: String
+  description: String!
+  link: String
 }

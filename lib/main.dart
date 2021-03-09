@@ -4,6 +4,7 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'models/ModelProvider.dart';
 import 'amplifyconfiguration.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,8 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _configureAmplify() async {
-    //  AmplifyDataStore datastorePlugin = AmplifyDataStore(modelProvider: ModelProvider());
-    //  Amplify.addPlugin(datastorePlugin);
     AmplifyDataStore datastorePlugin =
     AmplifyDataStore(modelProvider: ModelProvider.instance);
     Amplify.addPlugin(datastorePlugin);
@@ -74,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
   }
+
 }
 
 class CreateCodeItem extends StatefulWidget {
@@ -86,22 +86,26 @@ class CreateCodeItem extends StatefulWidget {
 class _CreateCodeItemState extends State<CreateCodeItem> {
   TextEditingController _titleController;
   TextEditingController _descriptionController;
+  TextEditingController _linkController;
 
   @override
   initState() {
     super.initState(); 
     _titleController = TextEditingController();
     _descriptionController = TextEditingController();
+    _linkController = TextEditingController();
   }
 
   void _submit() async {
-    print("about to save");
     CodeListItem newItem = CodeListItem(
-      title: _titleController.text, description: _descriptionController.text
+      title: _titleController.text,
+      description: _descriptionController.text,
+      link: _linkController.text
     );
     await Amplify.DataStore.save(newItem);
     _titleController.clear();
     _descriptionController.clear();
+    _linkController.clear();
   }
 
   @override
@@ -124,10 +128,16 @@ class _CreateCodeItemState extends State<CreateCodeItem> {
                 labelText: "Description"
               )
             ),
+            TextField(
+              controller: _linkController,
+              decoration: InputDecoration(
+                labelText: "Link"
+              )
+            ),
             ElevatedButton(onPressed: _submit, child: Text("Create CodeList Item"),)
           ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      )
     );
   }
 }
@@ -136,10 +146,10 @@ class ViewCodeItems extends StatefulWidget {
   ViewCodeItems({Key key}) : super(key: key);
 
   @override
-  _ViewCodeItems createState() => _ViewCodeItems();
+  _ViewCodeItemsState createState() => _ViewCodeItemsState();
 }
 
-class _ViewCodeItems extends State <ViewCodeItems> {
+class _ViewCodeItemsState extends State <ViewCodeItems> {
   List _codeListItems = [];
   Stream stream;
 
@@ -187,7 +197,7 @@ class _ViewCodeItems extends State <ViewCodeItems> {
             shrinkWrap: true,
             padding: EdgeInsets.all(8),
             itemCount: _codeListItems.length,
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder: (_, index) {
               return Column(
                 children: [
                   Padding(
@@ -207,13 +217,23 @@ class _ViewCodeItems extends State <ViewCodeItems> {
                       style: TextStyle(
                         fontSize: 18.0
                       ),
-                      )),
+                    )),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 14),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await launch(_codeListItems[index].link);
+                      },
+                      child: new Text(_codeListItems[index].link)
+                    )
                   ),
                   ElevatedButton(
                     child: Text("Delete Item"),
-                    onPressed: () => _deleteItem(_codeListItems[index].id),
+                    onPressed: () =>
+                      _deleteItem(_codeListItems[index].id),
                   )
-                ],
+                ]
               );
             }
           )

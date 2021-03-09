@@ -22,7 +22,7 @@ export 'CodeListItem.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "b075c4b3f1bddacd3f4249c31c5c9023";
+  String version = "4185d547a2e371fe92aab569832b354f";
   @override
   List<ModelSchema> modelSchemas = [CodeListItem.schema];
   static final ModelProvider _instance = ModelProvider();

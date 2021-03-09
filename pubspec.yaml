@@ -8,8 +8,9 @@ dependencies:
   flutter:
     sdk: flutter
   amplify_flutter: '<1.0.0'
-  amplify_datastore: '<1.0.0'
   amplify_api: '<1.0.0'
+  amplify_datastore: '<1.0.0'
+  url_launcher: '^6.0.2'
 
   cupertino_icons: ^1.0.0
 
