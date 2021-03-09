@@ -1,16 +1,31 @@
-# codelist
+# Code List
 
-A new Flutter project.
+This is an app built with AWS Amplify & Flutter to go along with the Code Magazine article titled "Building Cross-platform Mobile Apps on AWS with Flutter"
 
-## Getting Started
+## Getting started
 
-This project is a starting point for a Flutter application.
+To deploy this app, follow these steps:
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone this repo
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```sh
+git clone git@github.com:dabit3/amplify-flutter-codelist.git
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. Initialize the Amplify backend
+
+```sh
+amplify init
+```
+
+3. Deploy the Amplify backend
+
+```sh
+amplify push --y
+```
+
+4. Run the app
+
+```sh
+flutter run
+```
